@@ -3,6 +3,10 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    branches:
+      - feature/**
+      - bugfix/**
 jobs:
   test:
     runs-on: ubuntu-latest
