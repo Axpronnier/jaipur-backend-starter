@@ -13,7 +13,7 @@ router.post("/", function (req, res) {
   res.status(201).json(newGame)
 })
 
-router.get("/", (req,res) => {
+router.get("/", function (req,res) {
   const parties = databaseService.getGames()
   res.status(200).json(parties)
 })
