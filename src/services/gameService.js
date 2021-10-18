@@ -68,3 +68,20 @@ export function createGame(name) {
   databaseService.saveGame(game)
   return game
 }
+
+export function takeGood(game, good) {
+  const currentPlayerIndex = game.currentPlayerIndex
+  const resourceId = game.market.indexOf(good)
+  if (resourceId === -1) {
+    return 1
+  }
+  if (game._players[currentPlayerIndex].hand.length() >= 7) {
+    return 2
+  }
+  game.market.splice(resourceId, 1)
+  game._players[currentPlayerIndex].hand.push(good)
+  game.market.push(drawCards(game.deck, 1))
+  game.currentPlayerIndex = 1 - game.currentPlayerIndex
+  databaseService.saveGame(game)
+  return 0
+}
