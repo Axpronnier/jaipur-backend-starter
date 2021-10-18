@@ -27,7 +27,7 @@ router.put("/:id/take-good", function (req, res) {
     return res.status(404).send("Game not found")
   }
 
-  if (!req.header("playerIndex") !== game.currentPlayerIndex) {
+  if (Number.parseInt(req.header("playerIndex")) !== game.currentPlayerIndex) {
     return res.status(401).send("Not this player turn")
   }
 
@@ -40,5 +40,6 @@ router.put("/:id/take-good", function (req, res) {
   if (code === 2) {
     return res.status(401).send("Hand already full")
   }
+
   return res.status(200)
 })

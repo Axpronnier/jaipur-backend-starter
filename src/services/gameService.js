@@ -76,6 +76,7 @@ export function takeGood(game, good) {
     return 1
   }
   if (game._players[currentPlayerIndex].hand.length() >= 7) {
+    // .length is not a function
     return 2
   }
   game.market.splice(resourceId, 1)
