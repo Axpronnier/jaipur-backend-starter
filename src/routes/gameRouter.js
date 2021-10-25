@@ -18,4 +18,21 @@ router.get("/", function (req,res) {
   res.status(200).json(parties)
 })
 
+router.get("/:id", function(req,res) {
+  const parties = databaseService.getGames()
+  if (!parties.find((partie) => partie.id === Number.parseInt(req.params.id)))
+  {
+    return res.status(404).send("Game not found")
+  }
+  const infos = parties.find((partie) => partie.id === Number.parseInt(req.params.id))
+  res.status(200).json(infos)
+})
+
+router.delete("/:id", function(req,res) {
+  const parties = databaseService.getGames()
+  if (!parties.find((partie) => partie.id === Number.parseInt(req.params.id)))
+  {
+    return res.status(404).send("Game not found")
+  }
+})
 export default router

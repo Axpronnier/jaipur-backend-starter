@@ -111,6 +111,31 @@ describe("Game router", () => {
 
     const response2 = await request(app).get("/games")
     expect(response2.statusCode).toBe(200)
-    expect(response2.body).toStrictEqual([{"id":2,"name":"cillum et do","market":["camel","camel","camel","leather","cloth"],"_deck":["silver","leather","cloth","silver","leather","diamonds","spice","spice","camel","spice","spice","camel","silver","diamonds","leather","gold","leather","spice","leather","cloth","gold","cloth","camel","silver","cloth","gold","leather","diamonds","gold","gold","leather","cloth","camel","silver","spice","camel","leather","gold","camel","spice"],"_players":[{"hand":["silver","cloth","leather","cloth"],"camelsCount":1,"score":0},{"hand":["diamonds","diamonds","spice","diamonds"],"camelsCount":1,"score":0}],"currentPlayerIndex":0,"tokens":{"diamonds":[7,7,5,5,5],"gold":[6,6,5,5,5],"silver":[5,5,5,5,5],"cloth":[5,3,3,2,2,1,1],"spice":[5,3,3,2,2,1,1],"leather":[4,3,2,1,1,1,1,1,1]},"_bonusTokens":{"3":[1,3,2,2,3,2,1],"4":[4,4,6,5,6,5],"5":[9,8,8,10,10]},"isDone":false}])
+    expect(response2.body).toStrictEqual([{ "id": 2, "name": "cillum et do", "market": ["camel", "camel", "camel", "leather", "cloth"], "_deck": ["silver", "leather", "cloth", "silver", "leather", "diamonds", "spice", "spice", "camel", "spice", "spice", "camel", "silver", "diamonds", "leather", "gold", "leather", "spice", "leather", "cloth", "gold", "cloth", "camel", "silver", "cloth", "gold", "leather", "diamonds", "gold", "gold", "leather", "cloth", "camel", "silver", "spice", "camel", "leather", "gold", "camel", "spice"], "_players": [{ "hand": ["silver", "cloth", "leather", "cloth"], "camelsCount": 1, "score": 0 }, { "hand": ["diamonds", "diamonds", "spice", "diamonds"], "camelsCount": 1, "score": 0 }], "currentPlayerIndex": 0, "tokens": { "diamonds": [7, 7, 5, 5, 5], "gold": [6, 6, 5, 5, 5], "silver": [5, 5, 5, 5, 5], "cloth": [5, 3, 3, 2, 2, 1, 1], "spice": [5, 3, 3, 2, 2, 1, 1], "leather": [4, 3, 2, 1, 1, 1, 1, 1, 1] }, "_bonusTokens": { "3": [1, 3, 2, 2, 3, 2, 1], "4": [4, 4, 6, 5, 6, 5], "5": [9, 8, 8, 10, 10] }, "isDone": false }])
+  })
+})
+
+describe("Game router", () => {
+  test("should find a game by the id", async () => {
+
+    fs.readFileSync.mockImplementation(() => {
+      return JSON.stringify([{id:2,name:"cillum et do"}])
+    })
+
+    const response = await request(app).get("/games/3")
+    expect(response.statusCode).toBe(404)
+  })
+})
+
+describe("Game router", () => {
+  test("should find a game by the id", async () => {
+
+    fs.readFileSync.mockImplementation(() => {
+      return JSON.stringify([{id:2,name:"cillum et do"}])
+    })
+
+    const response = await request(app).get("/games/2")
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toStrictEqual({id:2,name:"cillum et do"})
   })
 })
