@@ -34,5 +34,6 @@ router.delete("/:id", function(req,res) {
   {
     return res.status(404).send("Game not found")
   }
+  res.status(200).send(parties)
 })
 export default router

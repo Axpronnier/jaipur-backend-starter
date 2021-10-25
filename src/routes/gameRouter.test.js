@@ -139,3 +139,28 @@ describe("Game router", () => {
     expect(response.body).toStrictEqual({id:2,name:"cillum et do"})
   })
 })
+
+describe("Game router", () => {
+  test("should delete a game by the id", async () => {
+
+    fs.readFileSync.mockImplementation(() => {
+      return JSON.stringify([{id:2,name:"cillum et do"}])
+    })
+
+    const response = await request(app).delete("/games/3")
+    expect(response.statusCode).toBe(404)
+  })
+})
+
+describe("Game router", () => {
+  test("should delete a game by the id", async () => {
+
+    fs.readFileSync.mockImplementation(() => {
+      return JSON.stringify([{id:2,name:"cillum et do"}])
+    })
+
+    const response = await request(app).delete("/games/2")
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toStrictEqual([])
+  })
+})
