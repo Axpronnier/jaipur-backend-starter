@@ -19,6 +19,10 @@ router.put("/:id/take-good", function (req, res) {
     return res.status(400).send("Missing parameters")
   }
 
+  if (req.body.good === "camel") {
+    return res.status(401).send("Can't take camel")
+  }
+
   const game = databaseService
     .getGames()
     .find((g) => g.id === Number.parseInt(req.params.id))
@@ -27,6 +31,10 @@ router.put("/:id/take-good", function (req, res) {
     return res.status(404).send("Game not found")
   }
 
+  console.log(
+    Number.parseInt(req.header("playerIndex")),
+    game.currentPlayerIndex
+  )
   if (Number.parseInt(req.header("playerIndex")) !== game.currentPlayerIndex) {
     return res.status(401).send("Not this player turn")
   }
@@ -41,5 +49,5 @@ router.put("/:id/take-good", function (req, res) {
     return res.status(401).send("Hand already full")
   }
 
-  return res.status(200)
+  return res.status(200).send(game)
 })

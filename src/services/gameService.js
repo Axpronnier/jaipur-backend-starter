@@ -75,13 +75,12 @@ export function takeGood(game, good) {
   if (resourceId === -1) {
     return 1
   }
-  if (game._players[currentPlayerIndex].hand.length() >= 7) {
-    // .length is not a function
+  if (game._players[currentPlayerIndex].hand.length >= 7) {
     return 2
   }
   game.market.splice(resourceId, 1)
   game._players[currentPlayerIndex].hand.push(good)
-  game.market.push(drawCards(game.deck, 1))
+  game.market.push(drawCards(game._deck)[0])
   game.currentPlayerIndex = 1 - game.currentPlayerIndex
   databaseService.saveGame(game)
   return 0
