@@ -82,7 +82,7 @@ export function takeGood(game, good) {
   if (good !== "camel") {
     game._players[currentPlayerIndex].hand.push(good)
   } else {
-    game._players.camelsCount++
+    game._players[currentPlayerIndex].camelsCount++
   }
   game.market.push(drawCards(game._deck)[0])
   game.currentPlayerIndex = 1 - game.currentPlayerIndex
@@ -91,7 +91,6 @@ export function takeGood(game, good) {
 }
 
 export function exchange(game, take, give) {
-  // GERER CHAMEAUX
   const currentPlayerIndex = game.currentPlayerIndex
   let resourceId
 
@@ -99,7 +98,7 @@ export function exchange(game, take, give) {
     resourceId = game.market.indexOf(take[i])
     game.market.splice(resourceId, 1)
 
-    if (take[i] !== "camel") {
+    if (take[i] === "camel") {
       game._players[currentPlayerIndex].camelsCount++
     } else {
       game._players[currentPlayerIndex].hand.push(take[i])
