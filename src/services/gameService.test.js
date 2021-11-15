@@ -35,17 +35,17 @@ describe("Game service", () => {
   test("should take an item from market", async () => {
     const game = {
       _players: [
-        { hand: ["camel", "gold"], camelsCount: 0 },
+        { hand: ["diamonds", "gold"], camelsCount: 0 },
         { hand: ["gold", "gold"], camelsCount: 0 },
       ],
       _deck: ["diamonds","gold","camel"],
       market: ["diamonds","gold","camel","camel","camel"],
-      currentPlayerIndex=0
+      currentPlayerIndex: 0
     }
     gameService.takeGood(game,"gold")
-    expect(game.player[0].hand.toStrictEqual(["camel","gold","gold"]))
+    expect(game._players[0].hand).toStrictEqual(["diamonds","gold","gold"])
     expect(game.currentPlayerIndex===1)
-    expect(game._deck.toStrictEqual(["gold","camel"]))
-    expect(game.market.toStrictEqual(["diamonds","diamonds","camel","camel","camel"]))
+    expect(game._deck).toStrictEqual(["gold","camel"])
+    expect(game.market).toStrictEqual(["diamonds","camel","camel","camel","diamonds"])
   })
 })
