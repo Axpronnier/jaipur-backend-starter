@@ -38,14 +38,76 @@ describe("Game service", () => {
         { hand: ["diamonds", "gold"], camelsCount: 0 },
         { hand: ["gold", "gold"], camelsCount: 0 },
       ],
-      _deck: ["diamonds","gold","camel"],
-      market: ["diamonds","gold","camel","camel","camel"],
-      currentPlayerIndex: 0
+      _deck: ["diamonds", "gold", "camel"],
+      market: ["diamonds", "gold", "camel", "camel", "camel"],
+      currentPlayerIndex: 0,
     }
-    gameService.takeGood(game,"gold")
-    expect(game._players[0].hand).toStrictEqual(["diamonds","gold","gold"])
-    expect(game.currentPlayerIndex===1)
-    expect(game._deck).toStrictEqual(["gold","camel"])
-    expect(game.market).toStrictEqual(["diamonds","camel","camel","camel","diamonds"])
+    gameService.takeGood(game, "gold")
+    expect(game._players[0].hand).toStrictEqual(["diamonds", "gold", "gold"])
+    expect(game.currentPlayerIndex).toBe(1)
+    expect(game._deck).toStrictEqual(["gold", "camel"])
+    expect(game.market).toStrictEqual([
+      "diamonds",
+      "camel",
+      "camel",
+      "camel",
+      "diamonds",
+    ])
+  })
+
+  test("should take a camel from market", async () => {
+    const game = {
+      _players: [
+        { hand: ["diamonds", "gold"], camelsCount: 0 },
+        { hand: ["gold", "gold"], camelsCount: 0 },
+      ],
+      _deck: ["diamonds", "gold", "camel"],
+      market: ["diamonds", "gold", "camel", "camel", "camel"],
+      currentPlayerIndex: 0,
+    }
+    gameService.takeGood(game, "camel")
+    expect(game._players[0].hand).toStrictEqual(["diamonds", "gold"])
+    expect(game._players[0].camelsCount).toBe(1)
+    expect(game.currentPlayerIndex).toBe(1)
+    expect(game._deck).toStrictEqual(["gold", "camel"])
+    expect(game.market).toStrictEqual([
+      "diamonds",
+      "gold",
+      "camel",
+      "camel",
+      "diamonds",
+    ])
+  })
+
+  test("should exchange items", async () => {
+    const game = {
+      _players: [
+        { hand: ["diamonds", "gold"], camelsCount: 3 },
+        { hand: ["gold", "gold"], camelsCount: 0 },
+      ],
+      market: ["diamonds", "gold", "lether", "lether", "camel"],
+      currentPlayerIndex: 0,
+    }
+
+    gameService.exchange(
+      game,
+      ["lether", "gold", "lether"],
+      ["diamonds", "camel", "camel"]
+    )
+    expect(game._players[0].hand).toStrictEqual([
+      "gold",
+      "lether",
+      "gold",
+      "lether",
+    ])
+    expect(game.market).toStrictEqual([
+      "diamonds",
+      "camel",
+      "diamonds",
+      "camel",
+      "camel",
+    ])
+    expect(game.currentPlayerIndex).toBe(1)
+    expect(game._players[0].camelsCount).toBe(1)
   })
 })

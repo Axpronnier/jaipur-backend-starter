@@ -75,13 +75,47 @@ export function takeGood(game, good) {
   if (resourceId === -1) {
     return 1
   }
-  if (game._players[currentPlayerIndex].hand.length >= 7) {
+  if (game._players[currentPlayerIndex].hand.length >= 7 && good !== "camel") {
     return 2
   }
   game.market.splice(resourceId, 1)
-  game._players[currentPlayerIndex].hand.push(good)
+  if (good !== "camel") {
+    game._players[currentPlayerIndex].hand.push(good)
+  } else {
+    game._players.camelsCount++
+  }
   game.market.push(drawCards(game._deck)[0])
   game.currentPlayerIndex = 1 - game.currentPlayerIndex
   databaseService.saveGame(game)
   return 0
+}
+
+export function exchange(game, take, give) {
+  // GERER CHAMEAUX
+  const currentPlayerIndex = game.currentPlayerIndex
+  let resourceId
+
+  for (let i = 0; i < take.length; i++) {
+    resourceId = game.market.indexOf(take[i])
+    game.market.splice(resourceId, 1)
+
+    if (take[i] !== "camel") {
+      game._players[currentPlayerIndex].camelsCount++
+    } else {
+      game._players[currentPlayerIndex].hand.push(take[i])
+    }
+  }
+
+  for (let i = 0; i < give.length; i++) {
+    if (give[i] !== "camel") {
+      resourceId = game._players[currentPlayerIndex].hand.indexOf(give[i])
+      game._players[currentPlayerIndex].hand.splice(resourceId, 1)
+    } else {
+      game._players[currentPlayerIndex].camelsCount--
+    }
+    game.market.push(give[i])
+  }
+
+  game.currentPlayerIndex = 1 - game.currentPlayerIndex
+  databaseService.saveGame(game)
 }
