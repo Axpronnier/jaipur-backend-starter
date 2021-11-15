@@ -28,12 +28,12 @@ router.get("/:id", function(req,res) {
   res.status(200).json(infos)
 })
 
-router.delete("/:id", function(req,res) {
-  const parties = databaseService.getGames()
-  if (!parties.find((partie) => partie.id === Number.parseInt(req.params.id)))
-  {
-    return res.status(404).send("Game not found")
+router.delete("/:id", (req, res) => {
+  try {
+      deleteGame(parseInt(req.params.id))
+      res.status(200).send("OK")
+  } catch (e) {
+      res.status(404).send("Not found")
   }
-  res.status(200).send(parties)
 })
 export default router

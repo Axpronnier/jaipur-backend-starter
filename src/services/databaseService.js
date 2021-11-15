@@ -30,3 +30,24 @@ export function saveGame(game) {
   fs.writeFileSync(path.join(DATABASE_FILE), JSON.stringify(games))
   return games
 }
+
+export function deleteGame(id) {
+  let count = 0
+  const games = getGames().filter((elem) => {
+    if (elem.id === id) {
+      count = 1
+      return false
+    } else {
+      return true
+    }
+  })
+  if (count === 0) {
+    throw new Error("Game not found")
+  }
+  try {
+    fs.mkdirSync(path.dirname(DATABASE_FILE))
+  } catch (e) {
+    // Do nothing
+  }
+  fs.writeFileSync(path.join(DATABASE_FILE), JSON.stringify(games))
+}
